@@ -2,47 +2,52 @@ import React, {useState} from 'react'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
 import {
-Form,Alert,Container,
-InputGroup, InputGroupAddon,InputGroupText, Input,Button
+Form,
+Alert,
+Container,
+InputGroup,
+InputGroupAddon,
+InputGroupText, 
+Input,Button
 } from "reactstrap";
-
 
 function Customerlogin (){
     const [emailFocus, setemailFocus] = useState(false);
     const [passwordFocus, setpasswordFocus] = useState(false);
     const [customer_email, setcustomer_email]= useState(" ");
     const [customer_password, setcustomer_password]= useState("");
-    const [response, setresponse] =useState([]);
+    const [Cus,setCus] = useState("");
     const [loggedin,setLoggedin] = useState(false);
     const [loginfailAlert, setloginfailAlert] = React.useState(false);
-    
 
     function CustLogin(){
-      setresponse("");
+     // setresponse("");
       setloginfailAlert(false);
     axios.post('http://localhost:4000/onstep/user/customer/login',{email:customer_email, password:customer_password} )
-    .then(res => {setresponse(res.data);
+    .then(res => {
 
-          if (response.email===false){
+          if (res.data.email===false){
               console.log("Email not found");
               setloginfailAlert(true);
           }
-          else if(response.email===true && response.password===false){
+          else if(res.data.email===true && res.data.password===false){
             console.log("Password wrong");
             setloginfailAlert(true);
           }
-          else if(response.email===true && response.password===true){
+          else if(res.data.email===true && res.data.password===true){
+            setLoggedin(true);
+
+            setCus(res.data.details._id)
+            var user={type:'customer', details:res.data.details};
+            sessionStorage.setItem('user',JSON.stringify(user))
             setLoggedin(true);
           }
-          //console.log(response.json.email);
-          //setLoggedin(true);
-          
           }
           );}
     
 if(loggedin){
   return(
-    <Redirect to="/profile-page" />
+    <Redirect to="/products" />
   )
 }
 else{

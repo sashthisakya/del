@@ -11,9 +11,7 @@ function ProfilePageHeader() {
   React.useEffect(() => {
     if (window.innerWidth > 991) {
       const updateScroll = () => {
-        let windowScrollTop = window.pageYOffset / 3;
-        pageHeader.current.style.transform =
-          "translate3d(0," + windowScrollTop + "px,0)";
+       
       };
       window.addEventListener("scroll", updateScroll);
       return function cleanup() {
@@ -21,6 +19,10 @@ function ProfilePageHeader() {
       };
     }
   });
+
+  const user=sessionStorage.getItem('user');
+  const userData=JSON.parse(user);
+
   return (
     <>
       <div
@@ -31,10 +33,6 @@ function ProfilePageHeader() {
           className="page-header-image"
           style={{
 
-<<<<<<< HEAD:new/frontend/src/components/Headers/delivery-homeHeader.js
-=======
-            backgroundImage: "url(" + require("assets/img/signup.jpg") + ")",
->>>>>>> origin/thisakya:new/frontend/src/components/Headers/ProfilePageHeader.js
             backgroundImage: "url(" + require("assets/img/bgn.jpg") + ")"
 
           }}
@@ -47,8 +45,8 @@ function ProfilePageHeader() {
 
             <img alt="..." src={require("assets/img/prf.jpg")}></img>
           </div>
-          <h3 className="title">Delivery Personnel</h3>
-          <p className="category">Del-ID</p>
+          {/* <h3 className="title">{userData.details.delivery_name}</h3> */}
+      
 
         </Container>
       </div>

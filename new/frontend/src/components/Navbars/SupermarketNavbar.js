@@ -105,6 +105,18 @@ function IndexNavbar() {
                 </UncontrolledTooltip>
               </NavItem>
               <NavItem>
+              <NavLink
+                  to ="/incomingorders" tag={Link}
+                  id="incomingOrder"
+                >
+                  <i className="now-ui-icons shopping_bag-16"></i>
+                  <p className="d-lg-none d-xl-none">Orders</p>
+                </NavLink>
+                <UncontrolledTooltip target="#incomingOrder">
+                 Incoming Orders
+                </UncontrolledTooltip>
+              </NavItem>
+              <NavItem>
                 <NavLink
                   to="/supermarkethome" tag={Link}
                   id="myprofile"
@@ -118,7 +130,7 @@ function IndexNavbar() {
               </NavItem>
               <NavItem>
                 <NavLink
-                  to="/" tag={Link}
+                  to="/logout" tag={Link}
                   id="logout"
                 >
                   <i className="now-ui-icons media-1_button-power"></i>

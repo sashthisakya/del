@@ -5,8 +5,10 @@ const bcrypt = require('bcryptjs');
 const passport=require('passport');
 const LocalStrategy=require('passport-local').Strategy;
 const saltrounds=10;
- 
+const mongoose =require('mongoose');
 const Customer = require('../../models/user/customer.model');  
+
+//const userId;
 
 customerRoutes.route('/add').post(function (req, res) {
   //const email =req.params.email
@@ -44,11 +46,11 @@ customerRoutes.route('/').get(function (req, res) {
     }
   });
 });
+
 customerRoutes.route('/login').post(function(req,res){
   const email = req.body.email;
   const password = req.body.password;
- /* passport.use(new LocalStrategy (
-    function(email,password){*/
+
       Customer.findOne({ customer_email: email },function(err,user) {
     if (!user) {
       return res.json({ email: false, password:false });  
@@ -59,7 +61,7 @@ customerRoutes.route('/login').post(function(req,res){
         req.session.UserType="customer";
         req.session.email=user.customer_email;
         console.log(req.session.email);
-        return res.json({email: true, password:true });
+        return res.json({email: true, password:true,details:user });
       }
       else{
         return res.json({email: true, password:false, id:user._id });
@@ -68,11 +70,11 @@ customerRoutes.route('/login').post(function(req,res){
   })
 });
 
-customerRoutes.route('/edit/:id').get(function (req, res) {
+customerRoutes.route('/:id').get(function (req, res) {
   let id = req.params.id;
   Customer.findById(id, function (err, customer){
       res.json(customer);
-  });
+  }).catch(err=>console.log(err));
 });
 
 //  Defined update route
@@ -116,16 +118,11 @@ customerRoutes.route('/delete/:id').get(function (req, res) {
      
   });
 });*/
-
-customerRoutes.route('/edit/:id').get(function (req, res) {
-  let id = req.params.id;
-  customer.findById(id, function (err, customer){
-      res.json(customer);
-  });
-});
+//userId = this.session.User_id;
 
 customerRoutes.route('/edit/:id').post(function (req, res) {
-  customer.findById(req.params.id, function(err, customer) {
+  // console.log(req.params.id);
+  customer.findById(id).then(function(customer, err) {
   if (!customer)
     res.status(404).send("data is not found");
   else {
@@ -134,7 +131,7 @@ customerRoutes.route('/edit/:id').post(function (req, res) {
       customer.customer_address= req.body.customer_address;
       customer.customer_number= req.body.customer_number;
       customer.customer_password= req.body.customer_password;
-
+      customer.profile_picture = req.body.profile_picture;
       customer.save().then(customer => {
         res.json('Update complete');
     })
@@ -145,16 +142,34 @@ customerRoutes.route('/edit/:id').post(function (req, res) {
 });
 });
   
-function checkAuthenticated(req,res, next){
-  if(req.isAuthenticated()){
-    return next()
-  }
-}
-function checkNotAuthenticated(req,res,next){
-  if(req.isAuthenticated()){
-    return res.redirect ('/')
-  }
-}
+// function checkAuthenticated(req,res, next){
+//   if(req.isAuthenticated()){
+//     return next()
+//   }
+// }
+// function checkNotAuthenticated(req,res,next){
+//   if(req.isAuthenticated()){
+//     return res.redirect ('/')
+//   }
+// }
+
+
+customerRoutes.route('/test/:id').get(function (req, res) {
+  const id = req.params.id;
+  console.log(id)
+  Customer.findById(
+      { _id: id },
+      function(err, result) {
+        if (err) {
+          res.send(err);
+          //console.log(res);
+        } else {
+          res.send(result);
+        }
+      }
+    );
+  
+});
 
 
 

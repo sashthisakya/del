@@ -11,9 +11,9 @@ function ProfilePageHeader() {
   React.useEffect(() => {
     if (window.innerWidth > 991) {
       const updateScroll = () => {
-        let windowScrollTop = window.pageYOffset / 3;
-        pageHeader.current.style.transform =
-          "translate3d(0," + windowScrollTop + "px,0)";
+        // let windowScrollTop = window.pageYOffset / 3;
+        // pageHeader.current.style.transform =
+        //   "translate3d(0," + windowScrollTop + "px,0)";
       };
       window.addEventListener("scroll", updateScroll);
       return function cleanup() {
@@ -21,6 +21,9 @@ function ProfilePageHeader() {
       };
     }
   });
+
+  const user=sessionStorage.getItem('user');
+  const userData=JSON.parse(user);
   return (
     <>
       <div
@@ -43,7 +46,7 @@ function ProfilePageHeader() {
 
             <img alt="..." src={require("assets/img/prf.jpg")}></img>
           </div>
-          <h3 className="title">Supermarket Home</h3>
+          {/* <h3 className="title">{userData.details.supermarket_name}</h3> */}
         </Container>
       </div>
     </>

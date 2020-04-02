@@ -7,7 +7,7 @@ import {
 
 // core components
 import IndexNavbar from "components/Navbars/Customernavbar";
-import IndexHeader from "components/Headers/customerhomeHeader";
+import IndexHeader from "components/Headers/CustomerHeader";
 import DarkFooter from "components/Footers/Footer1";
 
 // sections for this page
@@ -31,9 +31,11 @@ function Onstep() {
         <IndexHeader />
         <div className="main">
           <Container>
+            <br/>
+          <h1 align="center">Shopping Cart</h1>
           <Cart />
           
-          <h1 align="center">Under Construction</h1>
+          
           </Container>
           
         </div>

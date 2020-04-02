@@ -43,10 +43,11 @@ deliveryRoutes.route('/').get(function (req, res) {
     }
   });
 });
-
+//rout to login
 deliveryRoutes.route('/login').post(function(req,res){
   const email = req.body.email;
   const password = req.body.password;
+  console.log("Login attempt");
   Delivery.findOne({ delivery_email: email }, ).then(user => {
     if (!user) {
       return res.json({ email: false, password:false });  
@@ -57,7 +58,7 @@ deliveryRoutes.route('/login').post(function(req,res){
         req.session.UserType="delivery";
         req.session.email=user.delivery_email;
         console.log(req.session.email);
-        return res.json({email: true, password:true });
+        return res.json({email: true, password:true,details:user });
       }
       else{
         return res.json({email: true, password:false, id:user._id });
@@ -66,22 +67,22 @@ deliveryRoutes.route('/login').post(function(req,res){
   })
 });
 
-deliveryRoutes.route('/edit/:id').get(function (req, res) {
+deliveryRoutes.route('/:id').get(function (req, res) {
   let id = req.params.id;
   Delivery.findById(id, function (err, delivery){
       res.json(delivery);
-  });
+  }).catch(err=>console.log(err));
 });
 
-//  Defined update route
-/*deliveryRoutes.route('/update/:id').post(function (req, res) {
+// Defined update route
+deliveryRoutes.route('/editdelp/:id').post(function (req, res) {
     Delivery.findById(req.params.id, function(err, delivery) {
     if (!delivery)
       res.status(404).send("data is not found");
     else {
-        delivery.person_name = req.body.person_name;
-        delivery.delivery_name = req.body.delivery_name;
-        delivery.delivery_gst_number = req.body.delivery_gst_number;
+        delivery.detail.delivery_number = req.body.delivery_number;
+        delivery.detail.delivery_name = req.body.delivery_name;
+        
 
         delivery.save().then(delivery => {
           res.json('Update complete');
@@ -91,7 +92,7 @@ deliveryRoutes.route('/edit/:id').get(function (req, res) {
       });
     }
   });
-});*/
+});
 
 deliveryRoutes.route('/delete/:id').get(function (req, res) {
     Delivery.findByIdAndRemove({_id: req.params.id}, function(err, delivery){

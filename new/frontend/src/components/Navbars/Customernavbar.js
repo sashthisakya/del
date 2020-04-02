@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -15,12 +15,14 @@ import {
   Container,
   UncontrolledTooltip
 } from "reactstrap";
+import Axios from "axios";
 
 
-function IndexNavbar() {
-  const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
-  const [collapseOpen, setCollapseOpen] = React.useState(false);
-  React.useEffect(() => {
+function CustomerNavBar() {
+  const [navbarColor, setNavbarColor] = useState("navbar-transparent");
+  const [collapseOpen, setCollapseOpen] = useState(false);
+  const [Cat,setCat]= useState([]);
+  useEffect(() => {
     const updateNavbarColor = () => {
       if (
         document.documentElement.scrollTop > 399 ||
@@ -39,6 +41,25 @@ function IndexNavbar() {
       window.removeEventListener("scroll", updateNavbarColor);
     };
   });
+
+useEffect(()=>{
+  Axios.get('http://localhost:4000/onstep/category/').then(res=>{setCat(res.data)}).catch(err=>{console.log(err)})
+})
+//console.log(Cat);
+
+const dropdown=Cat.map(function(category,index){
+  //console.log(category.category_name);
+  return(
+
+    <DropdownItem to={`/products/${category._id}`} tag={Link} key={index}>
+                    <i className="now-ui-icons shopping_basket"></i>
+                    {category.category_name}
+                  </DropdownItem>
+  )
+});
+
+
+
   return (
     <>
       {collapseOpen ? (
@@ -99,7 +120,7 @@ function IndexNavbar() {
                     <i className="now-ui-icons shopping_basket"></i>
                     All Products
                   </DropdownItem>
-                  
+                  {dropdown}
                 </DropdownMenu>
               </UncontrolledDropdown>
              
@@ -117,6 +138,18 @@ function IndexNavbar() {
               </NavItem>
               <NavItem>
                 <NavLink
+                  to ="/myorders" tag={Link}
+                  id="myorders"
+                >
+                  <i className="now-ui-icons shopping_bag-16"></i>
+                  <p className="d-lg-none d-xl-none">My Cart</p>
+                </NavLink>
+                <UncontrolledTooltip target="#myorders">
+                 View My Orders
+                </UncontrolledTooltip>
+              </NavItem>
+              <NavItem>
+                <NavLink
                   to="/profile-page" tag={Link}
                   id="myprofile"
                 >
@@ -129,8 +162,9 @@ function IndexNavbar() {
               </NavItem>
               <NavItem>
                 <NavLink
-                  to="/" tag={Link}
+                  to="/logout" tag={Link}
                   id="logout"
+            
                 >
                   <i className="now-ui-icons media-1_button-power"></i>
                   <p className="d-lg-none d-xl-none">Logout</p>
@@ -147,4 +181,4 @@ function IndexNavbar() {
   );
 }
 
-export default IndexNavbar;
+export default CustomerNavBar;

@@ -1,34 +1,38 @@
 const express = require('express');
 const productRoutes = express.Router();
+const session = require('express-session');
 
 let Product = require('../models/products.model');
 
 productRoutes.route('/add').post(function (req, res) {
   let product = new Product(req.body);
+  //console.log(product);
   product.save()
     .then(product => {
       res.status(200).json({'product': 'product in added successfully'});
     })
     .catch(err => {
+      console.log(err);
     res.status(400).send("unable to save to database");
+    
     });
 });
 
 
 productRoutes.route('/').get(function (req, res) {
-    Product.find(function(err, product){
-    if(err){
-      console.log(err);
-    }
-    else {
-      res.json(product);
-    }
-  });
+    Product.find().populate({path:'product_category'}).then(product => {
+      if(!product){
+        console.log("error");
+      }
+      else {
+        res.json(product);
+      }
+    });
 });
 
 productRoutes.route('/supermarket').post(function (req, res) {
   const seller=req.body.seller;
-  Product.find({product_seller:seller}).then(product => {
+  Product.find({seller_id:seller}).populate('product_category').then(product => {
   if(!product){
     console.log("error");
   }

@@ -3,10 +3,6 @@ import { Link } from "react-router-dom";
 // reactstrap components
 import {
   Collapse,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
   NavbarBrand,
   Navbar,
   NavItem,
@@ -99,6 +95,18 @@ function IndexNavbar() {
               </NavItem>
               <NavItem>
                 <NavLink
+                  to ="/activeorder" tag={Link}
+                  id="active-order"
+                >
+                  <i className="now-ui-icons shopping_bag-16"></i>
+                  <p className="d-lg-none d-xl-none">Orders</p>
+                </NavLink>
+                <UncontrolledTooltip target="#active-order">
+                 View Active orders
+                </UncontrolledTooltip>
+              </NavItem>
+              <NavItem>
+                <NavLink
                   to ="/completedorders" tag={Link}
                   id="completed"
                 >
@@ -111,7 +119,7 @@ function IndexNavbar() {
               </NavItem>
               <NavItem>
                 <NavLink
-                  to="/delivery-home" tag={Link}
+                  to="/delivery-home/:id" tag={Link}
                   id="myprofile"
                 >
                   <i className="now-ui-icons shopping_delivery-fast"></i>
@@ -123,7 +131,7 @@ function IndexNavbar() {
               </NavItem>
               <NavItem>
                 <NavLink
-                  to="/" tag={Link}
+                  to="/logout" tag={Link}
                   id="logout"
                 >
                   <i className="now-ui-icons media-1_button-power"></i>

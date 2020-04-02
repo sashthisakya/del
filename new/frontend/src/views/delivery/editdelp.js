@@ -1,9 +1,16 @@
 import React from 'react';
 import Modal from 'react-modal';
-import axios from 'axios';
-import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+import {
+  Button,
+ 
+} from "reactstrap";
+
+
 var querystring = require('querystring');
+
 
 class editdelp extends React.Component {
   constructor() {
@@ -30,39 +37,45 @@ class editdelp extends React.Component {
       month: this.props.expense.month,
       year: this.props.expense.year,
     });
-  }openModal() {
+  }
+  openModal() {
     this.setState({
       modalIsOpen: true
     });
-  }closeModal() {
+  }
+  closeModal() {
     this.setState({
       modalIsOpen: false,
       messageFromServer: ''
     });
-  }handleSelectChange(e) {
-    if (e.target.name == "month") {
+  }
+  handleSelectChange(e) {
+    if (e.target.name === "month") {
       this.setState({
         month: e.target.value
       });
     }
-    if (e.target.name == "year") {
+    if (e.target.name === "year") {
       this.setState({
         year: e.target.value
       });
     }
-  }handleTextChange(e) {
-    if (e.target.name == "description") {
+  }
+  handleTextChange(e) {
+    if (e.target.name === "description") {
       this.setState({
         description: e.target.value
       });
-    }if (e.target.name == "amount") {
+    }if (e.target.name === "amount") {
       this.setState({
         amount: e.target.value
       });
     }
-  }onClick(e) {
+  }
+  onClick(e) {
     this.update(this);
-  }update(e) {
+  }
+  update(e) {
     axios.post('/update',
       querystring.stringify({
         _id: e.state.id,
@@ -78,8 +91,9 @@ class editdelp extends React.Component {
       e.setState({
         messageFromServer: response.data
       });});
-  }render() {
-    if(this.state.messageFromServer == ''){
+  }
+  render() {
+    if(this.state.messageFromServer === ''){
       return (
         <div>
           <Button bsStyle="warning" bsSize="small" onClick={this.openModal}><span className="glyphicon glyphicon-edit"></span></Button>

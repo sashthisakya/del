@@ -5,7 +5,6 @@ const bcrypt = require('bcryptjs');
 const passport=require('passport');
 const LocalStrategy=require('passport-local').Strategy;
 const saltrounds=10;
-
 let Supermarket = require('../../models/user/supermarket.model');
 
 supermarketRoutes.route('/add').post(function (req, res) {
@@ -57,7 +56,7 @@ supermarketRoutes.route('/login').post(function(req,res){
         req.session.UserType="supermarket";
         req.session.email=user.supermarket_email;
         console.log(req.session.email);
-        return res.json({email: true, password:true });
+        return res.json({email: true, password:true,details:user });
       }
       else{
         return res.json({email: true, password:false, id:user._id });
@@ -66,11 +65,11 @@ supermarketRoutes.route('/login').post(function(req,res){
   })
 });
 
-supermarketRoutes.route('/edit/:id').get(function (req, res) {
+supermarketRoutes.route('/:id').get(function (req, res) {
   let id = req.params.id;
   Supermarket.findById(id, function (err, supermarket){
       res.json(supermarket);
-  });
+  }).catch(err=>console.log(err))
 });
 
 //  Defined update route
